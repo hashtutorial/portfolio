@@ -6,6 +6,7 @@ export default function Homepage() {
   const [isVisible, setIsVisible] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [expandedProject, setExpandedProject] = useState<number | null>(null);
 
   useEffect(() => {
     setIsVisible(true);
@@ -67,7 +68,7 @@ useEffect(() => {
   const skills = {
     languages: ['C++', 'Python', 'JavaScript', 'PHP', 'SQL', 'C', 'Bash', 'Assembly'],
     frameworks: ['Next.js', 'React', 'NumPy', 'Pandas', 'Scikit-learn', 'OpenMP', 'MPI'],
-    technologies: ['MySQL','Supabase','mondoDB', 'Git', 'Linux', 'VS Code','node js','n8n', 'Wireshark', 'Docker'],
+    technologies: ['MySQL','Supabase','MongoDB', 'Git', 'Linux', 'VS Code','node js','n8n', 'Wireshark', 'Docker'],
     web: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL','PostgreSQL']
   };
 
@@ -201,6 +202,7 @@ useEffect(() => {
   }
 `}</style>
 
+
 {/* Navigation */}
 <nav className="fixed top-0 w-full bg-black/20 backdrop-blur-lg border-b border-white/10 z-50 transition-all duration-300">
   <div className="max-w-7xl mx-auto px-6 py-4">
@@ -211,7 +213,7 @@ useEffect(() => {
         className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:ring-offset-2 focus:ring-offset-transparent rounded-sm"
         aria-label="Go to home section"
       >
-        
+        Your Logo
       </button>
       
       {/* Desktop Menu - Hidden on mobile */}
@@ -270,74 +272,78 @@ useEffect(() => {
     {/* Screen reader title */}
     <h2 id="mobile-menu-title" className="sr-only">Navigation Menu</h2>
     
-    <div className={`flex flex-col items-center justify-center h-full space-y-6 px-6 transition-all duration-700 ease-out ${
-      isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-    }`}>
-      {/* Close button for better UX */}
-      <button
-        onClick={() => setIsMenuOpen(false)}
-        className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400/50"
-        aria-label="Close menu"
-      >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
+    {/* Close button for better UX */}
+    <button
+      onClick={() => setIsMenuOpen(false)}
+      className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400/50 z-10"
+      aria-label="Close menu"
+    >
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
 
-      {/* Menu Items */}
-      {['About', 'Skills', 'Projects', 'Education', 'Contact'].map((item, index) => (
-        <button
-          key={item}
-          onClick={() => {
-            scrollToSection(item.toLowerCase());
-            setIsMenuOpen(false); // Close menu after selection
-          }}
-          className={`relative text-3xl md:text-4xl font-bold transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:ring-offset-4 focus:ring-offset-black rounded-lg px-4 py-2 ${
-            activeSection === item.toLowerCase() 
-              ? 'text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text' 
-              : 'text-white hover:text-transparent hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-400 hover:bg-clip-text'
-          }`}
-          style={{
-            animationDelay: `${index * 100}ms`,
-            animation: isMenuOpen ? 'slideInFromRight 0.6s ease-out forwards' : 'none'
-          }}
-          aria-current={activeSection === item.toLowerCase() ? 'page' : undefined}
-        >
-          {item}
-          
-          {/* Active indicator for mobile */}
-          {activeSection === item.toLowerCase() && (
-            <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full" />
-          )}
-        </button>
-      ))}
+    {/* Menu Content Container */}
+    <div className="flex flex-col items-center justify-center h-full px-6 pt-20 pb-8">
+      {/* Menu Items Container with proper spacing */}
+      <div className={`flex flex-col items-center space-y-4 transition-all duration-700 ease-out ${
+        isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+      }`}>
+        {/* Menu Items */}
+        {['About', 'Skills', 'Projects', 'Education', 'Contact'].map((item, index) => (
+          <button
+            key={item}
+            onClick={() => {
+              scrollToSection(item.toLowerCase());
+              setIsMenuOpen(false); // Close menu after selection
+            }}
+            className={`relative text-2xl font-bold transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:ring-offset-4 focus:ring-offset-black rounded-lg px-6 py-3 ${
+              activeSection === item.toLowerCase() 
+                ? 'text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text' 
+                : 'text-white hover:text-transparent hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-400 hover:bg-clip-text'
+            }`}
+            style={{
+              animationDelay: `${index * 100}ms`,
+              animation: isMenuOpen ? 'slideInFromRight 0.6s ease-out forwards' : 'none'
+            }}
+            aria-current={activeSection === item.toLowerCase() ? 'page' : undefined}
+          >
+            {item}
+            
+            {/* Active indicator for mobile */}
+            {activeSection === item.toLowerCase() && (
+              <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full" />
+            )}
+          </button>
+        ))}
+      </div>
      
-            {/* Social Links in Menu */}
-            <div className={`flex space-x-8 mt-12 transition-all duration-700 ease-out ${
-              isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-            }`} style={{ animationDelay: '500ms' }}>
-              <a 
-                href="https://github.com/hashtutorial" 
-                className="text-gray-400 hover:text-white transition-all duration-300 transform hover:scale-125 hover:rotate-12"
-              >
-                <Github size={32} />
-              </a>
-              <a 
-                href="https://linkedin.com/in/muhammad-hashir-adnan-434128280" 
-                className="text-gray-400 hover:text-blue-400 transition-all duration-300 transform hover:scale-125 hover:rotate-12"
-              >
-                <Linkedin size={32} />
-              </a>
-              <a 
-                href="mailto:hashiradnan679@gmail.com" 
-                className="text-gray-400 hover:text-red-400 transition-all duration-300 transform hover:scale-125 hover:rotate-12"
-              >
-                <Mail size={32} />
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
+      {/* Social Links in Menu */}
+      <div className={`flex space-x-8 mt-8 transition-all duration-700 ease-out ${
+        isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+      }`} style={{ animationDelay: '500ms' }}>
+        <a 
+          href="https://github.com/hashtutorial" 
+          className="text-gray-400 hover:text-white transition-all duration-300 transform hover:scale-125 hover:rotate-12"
+        >
+          <Github size={28} />
+        </a>
+        <a 
+          href="https://linkedin.com/in/muhammad-hashir-adnan-434128280" 
+          className="text-gray-400 hover:text-blue-400 transition-all duration-300 transform hover:scale-125 hover:rotate-12"
+        >
+          <Linkedin size={28} />
+        </a>
+        <a 
+          href="mailto:hashiradnan679@gmail.com" 
+          className="text-gray-400 hover:text-red-400 transition-all duration-300 transform hover:scale-125 hover:rotate-12"
+        >
+          <Mail size={28} />
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
 
       {/* Hero Section */}
       <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -374,16 +380,21 @@ useEffect(() => {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
             <button 
               onClick={() => scrollToSection('projects')}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-4 rounded-full font-semibold transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-4 rounded-full font-semibold transition-all transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer"
             >
               View My Work
             </button>
             <button 
               onClick={() => scrollToSection('contact')}
-              className="border-2 border-blue-400 hover:bg-blue-400 hover:text-black px-8 py-4 rounded-full font-semibold transition-all transform hover:scale-105"
+              className="border-2 border-blue-400 hover:bg-blue-400 hover:text-black px-8 py-4 rounded-full font-semibold transition-all transform hover:scale-105 cursor-pointer"
             >
               Get In Touch
             </button>
+
+            <a href="/resume.pdf" download className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-8 py-4 rounded-full font-semibold transition-all transform hover:scale-105 shadow-lg">
+              Download Resume 
+            </a>
+
           </div>
 
           <div className="flex justify-center space-x-6">
@@ -421,7 +432,7 @@ useEffect(() => {
                 My passion lies in building efficient systems and working on meaningful projects that make a real impact.
               </p>
               <p className="text-lg text-gray-300 leading-relaxed">
-                With over 3 years of experience in C++ and growing expertise in Python, JavaScript, and modern web technologies(Next.js, React), I have developed a solid foundation in software engineering principles.
+                With over 3 years of experience in C++ and growing expertise in Python, JavaScript, and modern web technologies (Next.js, React), I have developed a solid foundation in software engineering principles.
                 I enjoy tackling complex problems and creating solutions that matter.
               </p>
               <div className="flex flex-wrap gap-4">
@@ -528,48 +539,88 @@ useEffect(() => {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 bg-black/20">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Featured Projects
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto"></div>
-          </div>
+    <section id="projects" className="py-20 bg-black/20">
+  <div className="max-w-6xl mx-auto px-6">
+    <div className="text-center mb-16">
+      <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        Featured Projects
+      </h2>
+      <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto"></div>
+    </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
-              <div key={index} className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-6 rounded-2xl border border-white/10 hover:border-white/20 transition-all transform hover:scale-105 hover:shadow-2xl">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-semibold text-white">{project.title}</h3>
-                  <a href={project.live} target='_blank' className="text-gray-400 hover:text-white transition-colors">
-                    <ExternalLink size={20} />
-                  </a>
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {projects.map((project, index) => {
+        const isExpanded = expandedProject === index;
+        const displayedFeatures = isExpanded
+          ? project.features
+          : project.features.slice(0, 3);
+
+        return (
+          <div
+            key={index}
+            className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-6 rounded-2xl border border-white/10 hover:border-white/20 transition-all transform hover:scale-105 hover:shadow-2xl"
+          >
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-semibold text-white">
+                {project.title}
+              </h3>
+              <a
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <ExternalLink size={20} />
+              </a>
+            </div>
+
+            <p className="text-sm text-blue-400 mb-3 font-medium">
+              {project.tech}
+            </p>
+            <p className="text-gray-300 mb-4 leading-relaxed">
+              {project.description}
+            </p>
+
+            <div className="space-y-2">
+              {displayedFeatures.map((feature, idx) => (
+                <div key={idx} className="flex items-center space-x-2">
+                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                  <span className="text-sm text-gray-400">{feature}</span>
                 </div>
-                
-                <p className="text-sm text-blue-400 mb-3 font-medium">{project.tech}</p>
-                <p className="text-gray-300 mb-4 leading-relaxed">{project.description}</p>
-                
-                <div className="space-y-2">
-                  {project.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                      <span className="text-sm text-gray-400">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="mt-6 pt-4 border-t border-gray-700">
-                  <a href={project.github} className="inline-flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors">
-                    <Github size={16} />
-                    <span className="text-sm font-medium">View Code</span>
-                  </a>
-                </div>
-              </div>
-            ))}
+              ))}
+
+              {project.features.length > 3 && (
+                <button
+                  onClick={() =>
+                    setExpandedProject(isExpanded ? null : index)
+                  }
+                  className="text-blue-400 text-sm mt-1 hover:underline focus:outline-none"
+                >
+                  {isExpanded
+                    ? '– Show less'
+                    : `+ Show ${project.features.length - 3} more`}
+                </button>
+              )}
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-gray-700">
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                <Github size={16} />
+                <span className="text-sm font-medium">View Code</span>
+              </a>
+            </div>
           </div>
-        </div>
-      </section>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
 
       {/* Education Section */}
       <section id="education" className="py-20">
