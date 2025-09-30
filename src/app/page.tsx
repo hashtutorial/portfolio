@@ -641,7 +641,7 @@ useEffect(() => {
                 </div>
                 <div className="text-right mt-4 md:mt-0">
                   <p className="text-lg font-semibold text-green-400">CGPA: 3.5/4.0</p>
-                  <p className="text-gray-300">Expected: Spring 2026</p>
+                  <p className="text-gray-300">Expected: Summer 2026</p>
                 </div>
               </div>
               
