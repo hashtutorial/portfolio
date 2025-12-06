@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { Github, Linkedin, Mail, Phone, MapPin, Code, Database, Globe, Terminal, ChevronDown, ExternalLink, BookOpen, Award, User, Briefcase, X, Sparkles, ArrowRight, Star, Calendar, Map, Filter, Quote, TrendingUp, Zap, Layers, Cpu, Palette, Box, MessageSquare } from 'lucide-react';
+import { Github, Linkedin, Mail, Phone, MapPin, Code, Database, Globe, Terminal, ChevronDown, ExternalLink, BookOpen, Award, User, Briefcase, X, ArrowRight, Star, Calendar, Zap, Layers } from 'lucide-react';
 
 export default function Homepage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -15,7 +15,7 @@ export default function Homepage() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [activeFilter, setActiveFilter] = useState('all');
   const [typedText, setTypedText] = useState('');
-  const [particlePositions, setParticlePositions] = useState<{x: number, y: number, size: number, speedX: number, speedY: number}[]>([]);
+  const particlePositionsRef = useRef<{x: number, y: number, size: number, speedX: number, speedY: number}[]>([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [skillLevels, setSkillLevels] = useState<{[key: string]: number}>({});
 
@@ -23,13 +23,20 @@ export default function Homepage() {
   
   // Typing effect
   useEffect(() => {
+    // Initialize with first character
+    if (typedText === '') {
+      setTypedText(fullText.charAt(0));
+      return;
+    }
+    
+    // Continue typing
     if (typedText.length < fullText.length) {
       const timeout = setTimeout(() => {
         setTypedText(fullText.substring(0, typedText.length + 1));
       }, 100);
       return () => clearTimeout(timeout);
     }
-  }, [typedText]);
+  }, [typedText, fullText]);
 
   // Particle effect
   useEffect(() => {
@@ -40,7 +47,7 @@ export default function Homepage() {
       speedX: (Math.random() - 0.5) * 0.5,
       speedY: (Math.random() - 0.5) * 0.5
     }));
-    setParticlePositions(particles);
+    particlePositionsRef.current = particles;
   }, []);
 
   // Animate particles
@@ -57,29 +64,27 @@ export default function Homepage() {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      setParticlePositions(prevPositions => 
-        prevPositions.map(particle => {
-          let newX = particle.x + particle.speedX;
-          let newY = particle.y + particle.speedY;
-          
-          if (newX < 0 || newX > canvas.width) {
-            particle.speedX = -particle.speedX;
-            newX = particle.x + particle.speedX;
-          }
-          
-          if (newY < 0 || newY > canvas.height) {
-            particle.speedY = -particle.speedY;
-            newY = particle.y + particle.speedY;
-          }
-          
-          ctx.beginPath();
-          ctx.arc(newX, newY, particle.size, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(147, 51, 234, 0.5)';
-          ctx.fill();
-          
-          return { ...particle, x: newX, y: newY };
-        })
-      );
+      particlePositionsRef.current = particlePositionsRef.current.map((particle: {x: number, y: number, size: number, speedX: number, speedY: number}) => {
+        let newX = particle.x + particle.speedX;
+        let newY = particle.y + particle.speedY;
+        
+        if (newX < 0 || newX > canvas.width) {
+          particle.speedX = -particle.speedX;
+          newX = particle.x + particle.speedX;
+        }
+        
+        if (newY < 0 || newY > canvas.height) {
+          particle.speedY = -particle.speedY;
+          newY = particle.y + particle.speedY;
+        }
+        
+        ctx.beginPath();
+        ctx.arc(newX, newY, particle.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(147, 51, 234, 0.5)';
+        ctx.fill();
+        
+        return { ...particle, x: newX, y: newY };
+      });
       
       requestAnimationFrame(animate);
     };
@@ -205,7 +210,7 @@ export default function Homepage() {
       ],
       github: 'https://github.com/hashtutorial/Nexium_Hashir_grand-project',
       live: 'https://nexium-hashir-grand-project.vercel.app/',
-      category: 'web',
+      category: 'ai',
       image: '/api/placeholder/600/400'
     },
     {
@@ -241,7 +246,7 @@ export default function Homepage() {
       ],
       github: 'https://github.com/hashtutorial/Nexium_Hashir_Assign1',
       live: 'https://nexium-hashir-assign1.vercel.app/',
-      category: 'web',
+      category: 'ai',
       image: '/api/placeholder/600/400'
     },
     {
@@ -308,9 +313,9 @@ export default function Homepage() {
       icon: <Award className="text-yellow-400" size={24} />
     },
     {
-      title: "Hackathon Winner",
-      description: "First place in FAST-NUCES Annual Hackathon",
-      date: "Spring 2023",
+      title: "Book Trivia Competition Winner",
+      description: "Winner in NASCON' 24",
+      date: "2024",
       icon: <Zap className="text-blue-400" size={24} />
     },
     {
@@ -669,8 +674,8 @@ export default function Homepage() {
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
           <h1 className="mt-14 text-6xl md:text-8xl font-bold mb-6 text-gradient">
-            <span className="typing-effect">{typedText}</span>
-            <span className="typing-cursor"></span>
+            <span>{typedText || fullText}</span>
+            {typedText && typedText.length < fullText.length && <span className="typing-cursor ml-1"></span>}
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
             Computer Science Student at FAST-NUCES
@@ -1058,7 +1063,7 @@ export default function Homepage() {
                     ))}
                   </div>
                   
-                  <p className="text-gray-300 italic flex-grow">"{testimonial.content}"</p>
+                  <p className="text-gray-300 italic flex-grow">&ldquo;{testimonial.content}&rdquo;</p>
                 </div>
               </div>
             ))}
@@ -1189,7 +1194,7 @@ export default function Homepage() {
                       </svg>
                     </div>
                     <p className="text-lg">Thank you for your message!</p>
-                    <p className="text-gray-400">I'll get back to you soon.</p>
+                    <p className="text-gray-400">I&apos;ll get back to you soon.</p>
                   </div>
                 ) : (
                   <form onSubmit={handleFormSubmit} className="space-y-4">
