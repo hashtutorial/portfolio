@@ -125,7 +125,7 @@ export default function Homepage() {
     
     const handleScroll = () => {
       setScrollY(window.scrollY);
-      const sections = ['hero', 'about', 'skills', 'projects', 'achievements', 'testimonials', 'education', 'contact'];
+      const sections = ['hero', 'about', 'skills', 'projects', 'achievements', 'education', 'contact'];
       const scrollPosition = window.scrollY + 100;
       
       for (const section of sections) {
@@ -281,29 +281,6 @@ export default function Homepage() {
     }
   ];
 
-  const testimonials = [
-    {
-      name: "Dr. Sarah Ahmed",
-      position: "Professor of Computer Science",
-      company: "FAST-NUCES",
-      content: "Hashir demonstrates exceptional problem-solving skills and a deep understanding of complex algorithms. His projects consistently show innovation and technical excellence.",
-      avatar: "/api/placeholder/100/100"
-    },
-    {
-      name: "John Mitchell",
-      position: "Senior Software Engineer",
-      company: "TechCorp Solutions",
-      content: "I mentored Hashir during his internship and was impressed by his ability to quickly grasp new concepts and apply them effectively. He's a natural talent in full-stack development.",
-      avatar: "/api/placeholder/100/100"
-    },
-    {
-      name: "Ayesha Khan",
-      position: "Project Manager",
-      company: "Digital Innovations",
-      content: "Hashir's attention to detail and commitment to quality set him apart. He delivered our project ahead of schedule with exceptional code quality and documentation.",
-      avatar: "/api/placeholder/100/100"
-    }
-  ];
 
   const achievements = [
     {
@@ -531,7 +508,7 @@ export default function Homepage() {
             
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-8">
-              {['About', 'Skills', 'Projects', 'Achievements', 'Testimonials', 'Education', 'Contact'].map((item) => (
+              {['About', 'Skills', 'Projects', 'Achievements', 'Education', 'Contact'].map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollToSection(item.toLowerCase())}
@@ -603,7 +580,7 @@ export default function Homepage() {
               isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
             }`}>
               {/* Menu Items */}
-              {['About', 'Skills', 'Projects', 'Achievements', 'Testimonials', 'Education', 'Contact'].map((item, index) => (
+              {['About', 'Skills', 'Projects', 'Achievements', 'Education', 'Contact'].map((item, index) => (
                 <button
                   key={item}
                   onClick={() => {
@@ -1028,45 +1005,6 @@ export default function Homepage() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 glass-effect">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">
-              Testimonials
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto"></div>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="glass-effect p-6 rounded-2xl hover-lift perspective-1000">
-                <div className="transform-3d rotate-y-10 transition-all duration-500 h-full flex flex-col">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
-                      {testimonial.name.charAt(0)}
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">{testimonial.name}</h3>
-                      <p className="text-sm text-gray-400">{testimonial.position}</p>
-                      <p className="text-xs text-gray-500">{testimonial.company}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={16} className="text-yellow-400 fill-yellow-400" />
-                    ))}
-                  </div>
-                  
-                  <p className="text-gray-300 italic flex-grow">&ldquo;{testimonial.content}&rdquo;</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
