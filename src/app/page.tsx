@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { Github, Linkedin, Mail, Phone, MapPin, Code, Database, Globe, Terminal, ChevronDown, ExternalLink, BookOpen, Award, User, Briefcase, X, Menu, Sparkles, ArrowRight, Star, Calendar, Map, Filter, Quote, TrendingUp, Zap, Layers, Cpu, Palette, Box, MessageSquare } from 'lucide-react';
+import { Github, Linkedin, Mail, Phone, MapPin, Code, Database, Globe, Terminal, ChevronDown, ExternalLink, BookOpen, Award, User, Briefcase, X, Sparkles, ArrowRight, Star, Calendar, Map, Filter, Quote, TrendingUp, Zap, Layers, Cpu, Palette, Box, MessageSquare } from 'lucide-react';
 
 export default function Homepage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -34,8 +34,8 @@ export default function Homepage() {
   // Particle effect
   useEffect(() => {
     const particles = Array.from({ length: 50 }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
+      x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
+      y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1000),
       size: Math.random() * 3 + 1,
       speedX: (Math.random() - 0.5) * 0.5,
       speedY: (Math.random() - 0.5) * 0.5
@@ -46,7 +46,7 @@ export default function Homepage() {
   // Animate particles
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || typeof window === 'undefined') return;
     
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
